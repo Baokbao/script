@@ -1,34 +1,21 @@
 _G.HeadSize = 50
-_G.Disabled = false  -- Đặt lại thành false để kích hoạt chức năng
+_G.Disabled = true
 
-game:GetService('Players').PlayerAdded:Connect(function(player)
-    -- Đảm bảo áp dụng cho người chơi mới
-    player.CharacterAdded:Connect(function(character)
-        -- Đảm bảo nhân vật người chơi đã được spawn
-        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-        pcall(function()
-            humanoidRootPart.Size = Vector3.new(_G.HeadSize, _G.HeadSize, _G.HeadSize)
-            humanoidRootPart.Transparency = 0.7
-            humanoidRootPart.BrickColor = BrickColor.new("Really blue")
-            humanoidRootPart.Material = "Neon"
-            humanoidRootPart.CanCollide = false
-        end)
-    end)
-end)
-
-game:GetService('RunService').RenderStepped:Connect(function()
-    if _G.Disabled then
-        for _, player in ipairs(game:GetService('Players'):GetPlayers()) do
-            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                local humanoidRootPart = player.Character.HumanoidRootPart
-                pcall(function()
-                    humanoidRootPart.Size = Vector3.new(_G.HeadSize, _G.HeadSize, _G.HeadSize)
-                    humanoidRootPart.Transparency = 0.7
-                    humanoidRootPart.BrickColor = BrickColor.new("Really blue")
-                    humanoidRootPart.Material = "Neon"
-                    humanoidRootPart.CanCollide = false
-                end)
+game:GetService('RunService').RenderStepped:connect(function()
+    while true do
+        if _G.Disabled then
+            for i, v in next, game:GetService('Players'):GetPlayers() do
+                if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+                    pcall(function()
+                        v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize, _G.HeadSize, _G.HeadSize)
+                        v.Character.HumanoidRootPart.Transparency = 0.7
+                        v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really blue")
+                        v.Character.HumanoidRootPart.Material = "Neon"
+                        v.Character.HumanoidRootPart.CanCollide = false
+                    end)
+                end
             end
         end
+        wait(15)  -- Dừng 15 giây rồi tiếp tục chạy
     end
 end)
